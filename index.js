@@ -1,5 +1,7 @@
 var object = null;
 localStorage.clear();
+
+/* Create the body part */
 function createBody(){
     let div = document.createElement("div");
     div.classList.add("container");
@@ -9,6 +11,7 @@ function createBody(){
     document.body.appendChild(div);
 }
 
+/* create input box for todos */
 function createInput(){
     let input = document.createElement("input");
     input.id = "input";
@@ -20,6 +23,7 @@ function createInput(){
     return input;
 }
 
+/* create select label */
 function createSelectBody(str){
     let option = document.createElement("option");
     option.setAttribute("value",str);
@@ -54,6 +58,7 @@ function passTheValues(){
     });
 }
 
+/* create list for todos */
 function createList() {
     let div = document.createElement("div");
     div.classList.add("list");
@@ -190,6 +195,7 @@ function makeListOfUncompletedTasks(str){
     return li;
 }
 
+/* get the input value from user */
 function trigger(){
     let value = document.getElementById("input").value;
     switch(this.object){
