@@ -141,9 +141,7 @@ function appendAllElements(){
 }
 
 function appendCompletedTasks(){
-    console.log("Completed Tasks");
     let list_items = [];
-    console.log( localStorage.length );
     Object.keys(localStorage).forEach( (key) => {
         if( localStorage.getItem(key) === "true" ){
             list_items.push( makeListOfCompletedTasks(key) );
