@@ -23,7 +23,6 @@ body{
     font-size: 20px;
 }
 .container #select{
-    float: left;
     outline: none;
     border: none;
     background-color: whitesmoke;
@@ -38,7 +37,6 @@ body{
 }
 .container ol{
     list-style-type: none;
-    /*background-color: blue;*/
     font-size: 18px;
     margin-top: 20px;
     width: 100%;
