@@ -6,6 +6,12 @@ function createBody(){
     let div = document.createElement("div");
     div.classList.add("container");
     div.appendChild( createInput() );
+    
+    // create a button
+    let button = document.createElement("button");
+    button.innerText = "Add";
+    div.appendChild( button );
+    
     div.appendChild( createSelect() );
     div.appendChild( createList() );
     document.body.appendChild(div);
@@ -114,7 +120,9 @@ function addListItems(str){
     let li = document.createElement("li");
     let node = document.createTextNode(str);
 
-    arr.push( createSubListItems("","check") );
+    arr.push( createSubListItems("<i class='fa fa-check'></i>","check") );
+    arr[0].style.visibility = "hidden";
+    
     arr.push( createSubListItems(node,"node") );
     arr.push( createSubListItems("<i class='fa fa-edit'></i>","icon") );
     arr.push( createSubListItems("<i class='fa fa-trash'></i>","icon") );
@@ -122,9 +130,9 @@ function addListItems(str){
     removeTheParentNode( arr[3] );
     li = appendAllTheLiChild(arr,li);
     arr[1].addEventListener('click',()=>{
-        arr[0].innerHTML = "<i class='fa fa-check'></i>";
+        arr[0].style.visibility = "visible";
         localStorage.setItem( arr[1].textContent, true );
-        li.style.backgroundColor = "forestgreen";
+        li.style.backgroundColor = "blueviolet";
         arr[2].style.display = "none";
     });
     return li;
@@ -159,7 +167,7 @@ function makeListOfCompletedTasks(str){
     arr.push( createSubListItems(node,"node") );
     arr.push( createSubListItems("<i class='fa fa-trash'></i>","icon") );
     removeTheParentNode( arr[2] );
-    li.style.backgroundColor = "forestgreen";
+    li.style.backgroundColor = "blueviolet";
     li = appendAllTheLiChild(arr,li);
     return li;
 }
@@ -178,7 +186,9 @@ function makeListOfUncompletedTasks(str){
     let li = document.createElement("li");
     let node = document.createTextNode(str);
 
-    arr.push( createSubListItems("","check") );
+    arr.push( createSubListItems("<i class='fa fa-check'></i>","check") );
+    arr[0].style.visibility = "hidden";
+    
     arr.push( createSubListItems(node,"node") );
     arr.push( createSubListItems("<i class='fa fa-edit'></i>","icon") );
     arr.push( createSubListItems("<i class='fa fa-trash'></i>","icon") );
@@ -186,7 +196,7 @@ function makeListOfUncompletedTasks(str){
     removeTheParentNode( arr[3] );
     li = appendAllTheLiChild(arr,li);
     arr[1].addEventListener('click',()=>{
-        arr[0].innerHTML = "<i class='fa fa-check'></i>";
+        arr[0].style.visibility = "visible";
         localStorage.setItem( arr[1].textContent, true );
         li.style.display = "none";
     });
