@@ -33,8 +33,16 @@ function createButton(){
     button.innerText = "Add";
     // set the click event on button
     button.addEventListener('click',(event)=>{
-        trigger( event.target.previousSibling.value );
+        target( event.target.previousSibling.value );
     });
+    // set the window event listener for resizing the window
+    window.addEventListener("resize", () => {
+		if( window.innerWidth <= 700 ){
+            button.innerText = "+";
+        }else{
+            button.innerText = "Add";
+        }
+     });
     return button;
 }
 
@@ -207,7 +215,6 @@ function makeListOfUncompletedTasks(str){
 
 /* get the input value from user */
 function trigger(value){
-    //let value = document.getElementById("input").value;
     switch(this.object){
         case null:{
             if( localStorage.getItem(value) == null ){
