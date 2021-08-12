@@ -37,7 +37,7 @@ function createButton(){
     });
     // set the window event listener for resizing the window
     window.addEventListener("resize", () => {
-		if( window.innerWidth <= 700 ){
+       if( window.innerWidth <= 700 ){
             button.innerText = "+";
         }else{
             button.innerText = "Add";
