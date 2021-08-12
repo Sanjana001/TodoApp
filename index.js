@@ -21,7 +21,7 @@ function createInput(){
     // take input value on pressing enter
     input.addEventListener('keyup', (event) => {
         if( event.keyCode === 13 ){
-            trigger();
+            trigger( event.target.value );
         }
     });
     return input;
@@ -31,27 +31,28 @@ function createInput(){
 function createButton(){
     let button = document.createElement("button");
     button.innerText = "Add";
+    // set the click event on button
     button.addEventListener('click',(event)=>{
-        console.log(event.target.previousSibling.value);
+        trigger( event.target.previousSibling.value );
     });
     return button;
 }
 
-/* create select label */
-function createSelectBody(str){
+function createSelectBody(string){
     let option = document.createElement("option");
-    option.setAttribute("value",str);
-    let text_node = document.createTextNode(str);
-    option.appendChild(text_node);
+    option.setAttribute("value",string);
+    option.innerText = string;
     return option;
 }
 
+/* create the select body */
 function createSelect(){
     let select = document.createElement("select");
     select.id = "select";
     select.appendChild( createSelectBody("All") );
     select.appendChild( createSelectBody("Completed") );
     select.appendChild( createSelectBody("Uncompleted") );
+    // set the change event on select tag
     select.addEventListener('change',()=>{
         passTheValues();
     });
@@ -84,13 +85,6 @@ function createList() {
     ol.appendChild( addListItems("Excercise") );
     div.appendChild(ol);
     return div;
-}
-
-function createListTag(){
-    let ol = document.createElement("ol");
-    ol.id = "list";
-    ol.appendChild("<li>lll</li>");
-    document.getElementsByClassName("list").appendChild(ol);
 }
 
 function createSubListItems(str,cls){
@@ -212,8 +206,8 @@ function makeListOfUncompletedTasks(str){
 }
 
 /* get the input value from user */
-function trigger(){
-    let value = document.getElementById("input").value;
+function trigger(value){
+    //let value = document.getElementById("input").value;
     switch(this.object){
         case null:{
             if( localStorage.getItem(value) == null ){
