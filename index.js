@@ -23,8 +23,11 @@ function createInput(){
     input.id = "input";
     input.setAttribute("type","text");
     input.setAttribute("placeholder","Type something...");
-    input.addEventListener('change', () => {
-        trigger();
+    // take input value on pressing enter
+    input.addEventListener('keyup', (event) => {
+        if( event.keyCode === 13 ){
+            trigger();
+        }
     });
     return input;
 }
