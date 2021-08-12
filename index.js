@@ -6,12 +6,7 @@ function createBody(){
     let div = document.createElement("div");
     div.classList.add("container");
     div.appendChild( createInput() );
-    
-    // create a button
-    let button = document.createElement("button");
-    button.innerText = "Add";
-    div.appendChild( button );
-    
+    div.appendChild( createButton() );
     div.appendChild( createSelect() );
     div.appendChild( createList() );
     document.body.appendChild(div);
@@ -30,6 +25,16 @@ function createInput(){
         }
     });
     return input;
+}
+
+/* create button */
+function createButton(){
+    let button = document.createElement("button");
+    button.innerText = "Add";
+    button.addEventListener('click',(event)=>{
+        console.log(event.target.previousSibling.value);
+    });
+    return button;
 }
 
 /* create select label */
