@@ -20,7 +20,7 @@ function createInput(){
     input.setAttribute("placeholder","Type something...");
     // take input value on pressing enter
     input.addEventListener('keyup', (event) => {
-        if( event.keyCode === 13 ){
+        if( event.keyCode === 13 && event.target.value ){
             trigger( event.target.value );
         }
     });
@@ -33,7 +33,9 @@ function createButton(){
     button.innerText = "Add";
     // set the click event on button
     button.addEventListener('click',(event)=>{
-        target( event.target.previousSibling.value );
+        if( event.target.previousSibling.value ){
+            trigger( event.target.previousSibling.value );
+        }
     });
     // set the window event listener for resizing the window
     window.addEventListener("resize", () => {
