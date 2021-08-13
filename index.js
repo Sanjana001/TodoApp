@@ -30,7 +30,7 @@ function createInput(){
 /* create button */
 function createButton(){
     let button = document.createElement("button");
-    button.innerText = "Add";
+    button.innerText = window.innerWidth <= 700 ? "+" : "Add";
     // set the click event on button
     button.addEventListener('click',(event)=>{
         if( event.target.previousSibling.value ){
@@ -39,15 +39,12 @@ function createButton(){
     });
     // set the window event listener for resizing the window
     window.addEventListener("resize", () => {
-       if( window.innerWidth <= 700 ){
-            button.innerText = "+";
-        }else{
-            button.innerText = "Add";
-        }
+        button.innerText = window.innerWidth <= 700 ? "+" : "Add";
      });
     return button;
 }
 
+/* create the option tags */
 function createSelectBody(string){
     let option = document.createElement("option");
     option.setAttribute("value",string);
@@ -55,7 +52,7 @@ function createSelectBody(string){
     return option;
 }
 
-/* create the select body */
+/* create the select box */
 function createSelect(){
     let select = document.createElement("select");
     select.id = "select";
@@ -63,16 +60,13 @@ function createSelect(){
     select.appendChild( createSelectBody("Completed") );
     select.appendChild( createSelectBody("Uncompleted") );
     // set the change event on select tag
-    select.addEventListener('change',()=>{
-        passTheValues();
+    select.addEventListener('change',(event)=>{
+        passTheValues( event.target.options[ event.target.options.selectedIndex ].value );
     });
     return select;
 }
 
-function passTheValues(){
-    let select = document.getElementById("select");
-    let index = select.selectedIndex;
-    let selected_value = select.options[index].text;
+function passTheValues(selected_value){
     let ol = document.getElementById("list");
     while( ol.childElementCount != 0 ){
         ol.removeChild( ol.childNodes[0] );
@@ -83,18 +77,16 @@ function passTheValues(){
     });
 }
 
-/* create list for todos */
+/* create list tag for todos */
 function createList() {
-    let div = document.createElement("div");
-    div.classList.add("list");
     let ol = document.createElement("ol");
     ol.id = "list";
+    // set the items in localstorage
     localStorage.setItem("Wake Up at 6:00 A.M",false);
     localStorage.setItem("Excercise",false);
     ol.appendChild( addListItems("Wake Up at 6:00 A.M") );
     ol.appendChild( addListItems("Excercise") );
-    div.appendChild(ol);
-    return div;
+    return ol;
 }
 
 function createSubListItems(str,cls){
