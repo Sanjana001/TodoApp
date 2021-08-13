@@ -12,25 +12,23 @@ body{
     width: 60%;
     margin: 150px auto;
 }
-.container #input{
-    float: left;
+.container #input, .container #select, button{
     outline: none;
     border: none;
-    background-color: whitesmoke;
-    border-radius: 12px 0px;
-    width: 45%;
     padding: 10px;
     font-size: 20px;
 }
+.container #input{
+    float: left;
+    background-color: whitesmoke;
+    border-radius: 12px 0px;
+    width: 45%;
+}
 .container #select{
-    outline: none;
-    border: none;
     background-color: whitesmoke;
     border-radius: 10px;
     margin-left: 5%;
     width: 40%;
-    padding: 10px;
-    font-size: 20px;
 }
 .container #input[type="text"]:focus{
     border: 2px solid black;
@@ -58,19 +56,16 @@ body{
 }
 .check, .icon{
     width: 5%;
+    margin-right: 10px;
 }
 .check{
     color:springgreen;
 }
 button{
-    border: none;
-    outline: none;
     background-color: forestgreen;
     color: white;
     font-weight: bold;
     cursor: pointer;
     width: 10%;
-    padding: 10px;
     border-radius: 0px 12px;
-    font-size: 20px;
 }
