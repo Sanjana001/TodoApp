@@ -54,7 +54,7 @@ body{
 .node{
     width: 85%;
 }
-.check, .icon{
+.check, .icon, .edit{
     width: 5%;
     margin-right: 10px;
 }

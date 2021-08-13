@@ -22,6 +22,7 @@ function createInput(){
     input.addEventListener('keyup', (event) => {
         if( event.keyCode === 13 && event.target.value ){
             trigger( event.target.value );
+            event.target.value = "";
         }
     });
     return input;
@@ -35,6 +36,7 @@ function createButton(){
     button.addEventListener('click',(event)=>{
         if( event.target.previousSibling.value ){
             trigger( event.target.previousSibling.value );
+            event.target.previousSibling.value = "";
         }
     });
     // set the window event listener for resizing the window
@@ -66,6 +68,7 @@ function createSelect(){
     return select;
 }
 
+/* make the lists according to the selected option */
 function passTheValues(selected_value){
     let ol = document.getElementById("list");
     while( ol.childElementCount != 0 ){
@@ -89,11 +92,37 @@ function createList() {
     return ol;
 }
 
+function addListItems(str){
+    let arr = [];
+    let li = document.createElement("li");
+    let node = document.createTextNode(str);
+
+    arr.push( createSubListItems("<i class='fa fa-check'></i>","check") );
+    arr[0].style.visibility = "hidden";
+    arr.push( createSubListItems(node,"node") );
+    arr.push( createSubListItems("<i class='fa fa-edit'></i>","edit") );
+    arr.push( createSubListItems("<i class='fa fa-trash'></i>","icon") );
+    
+    //editTheText( arr[2] );
+    removeTheParentNode( arr[3] );
+    li = appendAllTheLiChild(arr,li);
+    arr[1].addEventListener('click',()=>{
+        arr[0].style.visibility = "visible";
+        localStorage.setItem( arr[1].textContent, true );
+        li.style.backgroundColor = "blueviolet";
+        arr[2].style.display = "none";
+    });
+    return li;
+}
+
 function createSubListItems(str,cls){
     let span = document.createElement("span");
     span.classList.add(cls);
     if(cls==="node") span.appendChild(str);
     else span.innerHTML = str;
+    if( cls === "edit"){
+        span.addEventListener('click', (event) => { editTheText(event); });
+    }
     return span;
 }
 
@@ -112,34 +141,10 @@ function appendAllTheLiChild(group_of_list_items,li){
     return li;
 }
 
-function editTheText(object){
-    object.addEventListener('click',()=>{
-        this.object = object;
-        document.getElementById("input").value = object.previousSibling.textContent;
-    });
-}
-
-function addListItems(str){
-    let arr = [];
-    let li = document.createElement("li");
-    let node = document.createTextNode(str);
-
-    arr.push( createSubListItems("<i class='fa fa-check'></i>","check") );
-    arr[0].style.visibility = "hidden";
-    
-    arr.push( createSubListItems(node,"node") );
-    arr.push( createSubListItems("<i class='fa fa-edit'></i>","icon") );
-    arr.push( createSubListItems("<i class='fa fa-trash'></i>","icon") );
-    editTheText( arr[2] );
-    removeTheParentNode( arr[3] );
-    li = appendAllTheLiChild(arr,li);
-    arr[1].addEventListener('click',()=>{
-        arr[0].style.visibility = "visible";
-        localStorage.setItem( arr[1].textContent, true );
-        li.style.backgroundColor = "blueviolet";
-        arr[2].style.display = "none";
-    });
-    return li;
+function editTheText(event){
+    let input =  event.target.parentNode.parentNode.parentNode.parentNode.childNodes[0];
+    input.value = event.target.parentNode.previousSibling.textContent;
+    object = event.target.parentNode.previousSibling;
 }
 
 function appendAllElements(){
@@ -209,7 +214,7 @@ function makeListOfUncompletedTasks(str){
 
 /* get the input value from user */
 function trigger(value){
-    switch(this.object){
+    switch(object){
         case null:{
             if( localStorage.getItem(value) == null ){
                 localStorage.setItem(value,false);
@@ -220,12 +225,11 @@ function trigger(value){
             break;
         }
         default:{
-            localStorage.removeItem( this.object.previousSibling.textContent );
-            this.object.previousSibling.textContent = value;
+            localStorage.removeItem( object.textContent );
+            object.textContent = value;
             localStorage.setItem( value, false );
-            this.object = null;
+            object = null;
         }
     }
     console.log( localStorage );
-    document.getElementById("input").value = "";
 }
