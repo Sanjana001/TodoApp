@@ -92,30 +92,36 @@ function createList() {
     return ol;
 }
 
-function addListItems(str){
-    let arr = [];
+/* create li element */
+function addListItems( value, string=null , bool=false ){
     let li = document.createElement("li");
-    let node = document.createTextNode(str);
-
-    arr.push( createSubListItems("<i class='fa fa-check'></i>","check") );
-    arr[0].style.visibility = "hidden";
-    arr.push( createSubListItems(node,"node") );
-    arr.push( createSubListItems("<i class='fa fa-edit'></i>","edit") );
-    arr.push( createSubListItems("<i class='fa fa-trash'></i>","icon") );
-    
-    //editTheText( arr[2] );
-    removeTheParentNode( arr[3] );
-    li = appendAllTheLiChild(arr,li);
-    arr[1].addEventListener('click',()=>{
-        arr[0].style.visibility = "visible";
-        localStorage.setItem( arr[1].textContent, true );
-        arr[1].style.textDecoration = "line-through";
+    let node = document.createTextNode(value);
+    let arr = components( node , bool );
+    if( bool ){
         li.style.backgroundColor = "blueviolet";
-        arr[2].style.display = "none";
-    });
+    } else{
+        node = arr.pop();
+        arr.push( createSubListItems("<i class='fa fa-edit'></i>","edit") );
+        arr.push(node);
+        arr[1].addEventListener( 'click', (e) => { styleTheLi(e,string) });
+    }
+    arr[ arr.length-1 ].addEventListener('click', (e) => { removeTheParentNode(e); });
+    li = appendAllTheLiChild(arr,li);
     return li;
 }
 
+/* create the li components */
+function components(node, bool){
+    let components = [];
+    components.push( createSubListItems("<i class='fa fa-check'></i>","check") );
+    components[0].style.visibility = bool ? "visible" : "hidden";
+    components.push( createSubListItems(node,"node") );
+    components[1].style.textDecoration = bool ? "line-through" : "none"; 
+    components.push( createSubListItems("<i class='fa fa-trash'></i>","icon") );
+    return components;
+}
+
+/* create items for li */
 function createSubListItems(str,cls){
     let span = document.createElement("span");
     span.classList.add(cls);
@@ -127,14 +133,33 @@ function createSubListItems(str,cls){
     return span;
 }
 
-function removeTheParentNode(object){
-    object.addEventListener('click',()=>{
-        object = object.parentNode;
-        localStorage.removeItem( object.textContent );
-        object.remove();
-    });
+/* remove the parent node */
+function removeTheParentNode(event){
+    localStorage.removeItem( event.target.parentNode.parentNode.childNodes[1].textContent );
+    event.target.parentNode.parentNode.remove();
 }
 
+/* edit the text */
+function editTheText(event){
+    let element = event.target.parentNode.parentNode;
+    element.parentNode.parentNode.childNodes[0].value = element.childNodes[1].textContent;
+    object = element.childNodes[1];
+}
+
+/* change the style of li */
+function styleTheLi(event, value){
+    if( !value ){
+        event.target.parentNode.style.backgroundColor = "blueviolet"; 
+        event.target.style.textDecoration = "line-through";
+        event.target.previousSibling.style.visibility = "visible";
+        event.target.parentNode.childNodes[2].remove();
+    }else{
+        event.target.parentNode.style.display = "none";
+    }
+    localStorage.setItem( event.target.textContent, true );
+}
+
+/* append the childnodes to li */
 function appendAllTheLiChild(group_of_list_items,li){
     group_of_list_items.forEach( (value) => {
         li.appendChild(value);
@@ -142,76 +167,34 @@ function appendAllTheLiChild(group_of_list_items,li){
     return li;
 }
 
-function editTheText(event){
-    let input =  event.target.parentNode.parentNode.parentNode.parentNode.childNodes[0];
-    input.value = event.target.parentNode.previousSibling.textContent;
-    object = event.target.parentNode.previousSibling;
-}
-
-function appendAllElements(){
-    let list_items = [];
-    console.log("all");
-    Object.keys(localStorage).forEach( (key) => {
-        if( localStorage.getItem(key) === "true" ) list_items.push( makeListOfCompletedTasks(key) );
-        else list_items.push( addListItems(key) );
-    });
-    return list_items;
-}
-
+/* make the list of completed tasks */
 function appendCompletedTasks(){
     let list_items = [];
     Object.keys(localStorage).forEach( (key) => {
         if( localStorage.getItem(key) === "true" ){
-            list_items.push( makeListOfCompletedTasks(key) );
+            list_items.push( addListItems( key, null , true ) );
         }
     });
     return list_items;
 }
 
-function makeListOfCompletedTasks(str){
-    let arr = [];
-    let li = document.createElement("li");
-    let node = document.createTextNode(str);
-
-    arr.push( createSubListItems("<i class='fa fa-check'></i>","check") );
-    arr.push( createSubListItems(node,"node") );
-    arr.push( createSubListItems("<i class='fa fa-trash'></i>","icon") );
-    removeTheParentNode( arr[2] );
-    li.style.backgroundColor = "blueviolet";
-    arr[1].style.textDecoration = "line-through";
-    li = appendAllTheLiChild(arr,li);
-    return li;
-}
-
+/* make list of uncompleted task */
 function appendUncompletedTasks(){
     let list_items = [];
-    console.log("Uncompleted Tasks");
     Object.keys(localStorage).forEach( (key,value) => {
-        if( localStorage.getItem(key) == "false" ) list_items.push( makeListOfUncompletedTasks(key) );
+        if( localStorage.getItem(key) == "false" ) list_items.push( addListItems( key, "uncompleted") );
     });
     return list_items;
 }
 
-function makeListOfUncompletedTasks(str){
-    let arr = [];
-    let li = document.createElement("li");
-    let node = document.createTextNode(str);
-
-    arr.push( createSubListItems("<i class='fa fa-check'></i>","check") );
-    arr[0].style.visibility = "hidden";
-    
-    arr.push( createSubListItems(node,"node") );
-    arr.push( createSubListItems("<i class='fa fa-edit'></i>","icon") );
-    arr.push( createSubListItems("<i class='fa fa-trash'></i>","icon") );
-    editTheText( arr[2] );
-    removeTheParentNode( arr[3] );
-    li = appendAllTheLiChild(arr,li);
-    arr[1].addEventListener('click',()=>{
-        arr[0].style.visibility = "visible";
-        localStorage.setItem( arr[1].textContent, true );
-        li.style.display = "none";
+/* make list of all tasks */
+function appendAllElements(){
+    let list_items = [];
+    Object.keys(localStorage).forEach( (key) => {
+        if( localStorage.getItem(key) === "true" ) list_items.push( addListItems( key, null , true) );
+        else list_items.push( addListItems(key) );
     });
-    return li;
+    return list_items;
 }
 
 /* get the input value from user */
