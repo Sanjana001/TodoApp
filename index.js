@@ -109,6 +109,7 @@ function addListItems(str){
     arr[1].addEventListener('click',()=>{
         arr[0].style.visibility = "visible";
         localStorage.setItem( arr[1].textContent, true );
+        arr[1].style.textDecoration = "line-through";
         li.style.backgroundColor = "blueviolet";
         arr[2].style.display = "none";
     });
@@ -177,6 +178,7 @@ function makeListOfCompletedTasks(str){
     arr.push( createSubListItems("<i class='fa fa-trash'></i>","icon") );
     removeTheParentNode( arr[2] );
     li.style.backgroundColor = "blueviolet";
+    arr[1].style.textDecoration = "line-through";
     li = appendAllTheLiChild(arr,li);
     return li;
 }
